@@ -136,7 +136,7 @@ $directories = array(
             'en' => MODX_CORE_PATH.'components/'.$package_name.'/lexicon/en/',
         'model' => MODX_CORE_PATH.'components/'.$package_name.'/model/',
             'my_model' => MODX_CORE_PATH.'components/'.$package_name.'/model/'.$package_name.'/',
-                'mysql' => MODX_CORE_PATH.'components/'.$package_name.'/model/'.$package_name.'/mysql',
+                $modx->config['dbtype'] => MODX_CORE_PATH.'components/'.$package_name.'/model/'.$package_name.'/'.$modx->config['dbtype'],
             'request' => MODX_CORE_PATH.'components/'.$package_name.'/model/request/',
         'processors' => MODX_CORE_PATH.'components/'.$package_name.'/processors/',
             'processors_mgr' => MODX_CORE_PATH.'components/'.$package_name.'/processors/mgr/',
@@ -168,7 +168,7 @@ if ($loaded) {
     $generator->setAllowedTables($my_tables);
     
         
-    $xml_schema_file = $directories['my_model'].$package_name.'.mysql.schema.xml';
+    $xml_schema_file = $directories['my_model'].$package_name.'.'.$modx->config['dbtype'].'.schema.xml';
     // (re)Build the schema file
     // echo 'Scheme: '.$cmp->get('build_scheme');
     if ( $cmp->get('build_scheme') ) {
@@ -185,7 +185,7 @@ if ($loaded) {
     // (re)Build the table classes(package):
     if ( $cmp->get('build_package') ) { // package
         // delete any old/current class and map keys:
-        rmdir_files($directories['mysql']);
+        rmdir_files($directories[$modx->config['dbtype']]);
         // now create the class and map keys:
         $generator->parseSchema($xml_schema_file, $directories['model']);
     }
